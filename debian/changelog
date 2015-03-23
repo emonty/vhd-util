@@ -1,3 +1,9 @@
+vhd-util (4.4.0-0ubuntu2) trusty; urgency=medium
+
+  * Fixed site-packages/dist-package situation 
+
+ -- Monty Taylor <mordred@inaugust.com>  Mon, 23 Mar 2015 10:41:38 -0400
+
 vhd-util (4.4.0-0ubuntu1) trusty; urgency=low
 
   * Initial release
