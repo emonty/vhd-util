@@ -1,0 +1,27 @@
+How to enable early printk
+
+Early printk can only be enabled if debug=y. You may want to enable it if
+you are debbuging code that executes before the console is initialized.
+
+Note that selecting this option will limit Xen to a single UART definition.
+Attempting to boot Xen image on a different platform *will not work*, so this
+option should not be enable for Xens that are intended to be portable.
+
+CONFIG_EARLY_PRINTK=mach
+where mach is the name of the machine:
+  - vexpress: printk with pl011 for versatile express
+  - exynos5250: printk with the second UART
+  - midway: printk with the pl011 on Calxeda Midway processors
+  - fastmodel: printk on ARM Fastmodel software emulators
+  - omap5432: printk with UART3 on TI OMAP5432 processors
+  - sun6i: printk with 8250 on Allwinner A31 processors
+  - sun7i: printk with 8250 on Allwinner A20 processors
+
+The base address and baud rate is hardcoded in xen/arch/arm/Rules.mk,
+see there when adding support for new machines.
+If not explicitly requested with "EARLY_PRINTK_INIT_UART := y" in Rules.mk,
+the code will not try to initialize the UART, so that bootloader or
+firmware settings can be used for maximum compatibility. The baud rate
+parameter is ignored in this case.
+
+By default early printk is disabled.
