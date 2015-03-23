@@ -9,3 +9,7 @@
 
 override_dh_auto_configure:
 	dh_auto_configure -- --disable-monitors --disable-ocamltools --disable-rombios --disable-seabios
+
+override_dh_builddeb:
+	rm -rf debian/vhd-util/usr/lib/python2.7/site-packages
+	dh_builddeb -a -O--sourcedirectory=tools

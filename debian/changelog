@@ -1,3 +1,9 @@
+vhd-util (4.4.0-0ubuntu3) trusty; urgency=medium
+
+  * Just remove the python files, we don't use them anyway 
+
+ -- Monty Taylor <mordred@inaugust.com>  Mon, 23 Mar 2015 11:06:10 -0400
+
 vhd-util (4.4.0-0ubuntu2) trusty; urgency=medium
 
   * Fixed site-packages/dist-package situation 
