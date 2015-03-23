@@ -1,0 +1,32 @@
+Source: vhd-util
+Section: devel
+Priority: optional
+Maintainer: Monty Taylor <mordred@inaugust.com>
+Build-Depends:
+ debhelper (>= 8.0.0),
+ autotools-dev,
+ python-dev,
+ gettext,
+ bin86,
+ bcc,
+ iasl,
+ uuid,
+ uuid-dev,
+ libncurses5-dev,
+ pkg-config,
+ libglib2.0-dev,
+ libaio-dev,
+ libyajl-dev,
+ gcc-multilib,
+ libpixman-1-dev,
+ wget,
+ libssl-dev
+Standards-Version: 3.9.4
+#Vcs-Git: git://git.debian.org/collab-maint/vhd-util.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/vhd-util.git;a=summary
+
+Package: vhd-util
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: vhd-util patched to create vhd files
+ vhd-util patched to create vhd files

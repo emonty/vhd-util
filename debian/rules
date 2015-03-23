@@ -1,0 +1,11 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+%:
+	dh $@  --with autotools-dev --sourcedirectory=tools
+
+override_dh_auto_configure:
+	dh_auto_configure -- --disable-monitors --disable-ocamltools --disable-rombios --disable-seabios
