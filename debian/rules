@@ -11,5 +11,12 @@ override_dh_auto_configure:
 	dh_auto_configure -- --disable-monitors --disable-ocamltools --disable-rombios --disable-seabios
 
 override_dh_builddeb:
-	rm -rf debian/vhd-util/usr/lib
+	rm -rf debian/vhd-util/etc debian/vhd-util/usr/bin debian/vhd-util/usr/include debian/vhd-util/var debian/vhd-util/usr/libexec debian/vhd-util/usr/etc debian/vhd-util/usr/bin
+	mv debian/vhd-util/usr/sbin/vhd-util debian/vhd-util/usr/vhd-util
+	rm debian/vhd-util/usr/sbin/*
+	mv debian/vhd-util/usr/vhd-util debian/vhd-util/usr/sbin
+	mv debian/vhd-util/usr/lib/libvhd* debian/vhd-util/usr/
+	rm debian/vhd-util/usr/lib/*
+	mv debian/vhd-util/usr/libvhd* debian/vhd-util/usr/lib
+	find debian/vhd-util/usr/bin
 	dh_builddeb -a -O--sourcedirectory=tools

@@ -1,3 +1,9 @@
+vhd-util (4.4.0-0ubuntu5) trusty; urgency=medium
+
+  * Remove everything that isn't vhd-util and libvhd*
+
+ -- Monty Taylor <mordred@inaugust.com>  Mon, 20 Apr 2015 17:50:36 -0400
+
 vhd-util (4.4.0-0ubuntu4) trusty; urgency=medium
 
   * Remove everything in lib to prevent conflicts with other packages 
