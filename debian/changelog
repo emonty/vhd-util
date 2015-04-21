@@ -1,6 +1,7 @@
 vhd-util (4.4.0-0ubuntu8) trusty; urgency=medium
 
   * Support platform arch in an arch independent manner 
+  * Cleanup the find commands
 
  -- Monty Taylor <mordred@inaugust.com>  Tue, 21 Apr 2015 11:28:45 -0400
 
