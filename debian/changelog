@@ -1,3 +1,9 @@
+vhd-util (4.4.0-0ubuntu11) trusty; urgency=medium
+
+  * Use an install file instead
+
+ -- Monty Taylor <mordred@inaugust.com>  Tue, 21 Apr 2015 13:14:21 -0400
+
 vhd-util (4.4.0-0ubuntu10) trusty; urgency=medium
 
   * Remove the python things again 
