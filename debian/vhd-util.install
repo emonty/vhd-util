@@ -1,2 +1,2 @@
-usr/bin/vhd-util
+usr/sbin/vhd-util
 usr/lib/*/libvhd*
