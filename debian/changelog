@@ -1,3 +1,9 @@
+vhd-util (4.4.0-0ubuntu13) trusty; urgency=medium
+
+  * Install into debian/tmp
+
+ -- Monty Taylor <mordred@inaugust.com>  Tue, 21 Apr 2015 16:54:25 -0400
+
 vhd-util (4.4.0-0ubuntu12) trusty; urgency=medium
 
   * vhd-util is in sbin 

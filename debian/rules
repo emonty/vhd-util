@@ -10,5 +10,8 @@
 override_dh_auto_configure:
 	dh_auto_configure -- --disable-monitors --disable-ocamltools --disable-rombios --disable-seabios
 
+override_dh_autoinstall:
+	dh_auto_install --destdir=debian/tmp
+
 override_dh_builddeb:
 	dh_builddeb -a -O--sourcedirectory=tools
