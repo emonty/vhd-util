@@ -1,3 +1,9 @@
+vhd-util (4.4.0-0ubuntu10) trusty; urgency=medium
+
+  * Remove the python things again 
+
+ -- Monty Taylor <mordred@camelot.e-monty.com>  Tue, 21 Apr 2015 12:29:39 -0400
+
 vhd-util (4.4.0-0ubuntu9) trusty; urgency=medium
 
   * Fix typo in arch detection
