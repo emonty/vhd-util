@@ -13,12 +13,12 @@ override_dh_auto_configure:
 override_dh_builddeb:
 	find debian/vhd-util/usr/bin
 	find debian/vhd-util/usr/lib
-	rm -rf debian/vhd-util/etc debian/vhd-util/usr/bin debian/vhd-util/usr/include debian/vhd-util/var debian/vhd-util/usr/libexec debian/vhd-util/usr/etc debian/vhd-util/usr/bin
+	rm -rf debian/vhd-util/etc debian/vhd-util/usr/bin debian/vhd-util/usr/include debian/vhd-util/var debian/vhd-util/usr/libexec debian/vhd-util/usr/etc debian/vhd-util/usr/bin debian/vhd-util/usr/lib/xen
 	mv debian/vhd-util/usr/sbin/vhd-util debian/vhd-util/usr/vhd-util
 	rm debian/vhd-util/usr/sbin/*
 	mv debian/vhd-util/usr/vhd-util debian/vhd-util/usr/sbin
 	mv debian/vhd-util/usr/lib/x86_64-linux-gnu/libvhd* debian/vhd-util/usr/
-	rm debian/vhd-util/usr/lib/x86_64-linux-gnu/*
+	rm -rf debian/vhd-util/usr/lib/x86_64-linux-gnu/*
 	mv debian/vhd-util/usr/libvhd* debian/vhd-util/usr/lib/x86_64-linux-gnu
 	find debian/vhd-util/usr/bin
 	find debian/vhd-util/usr/lib
