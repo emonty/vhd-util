@@ -1,3 +1,9 @@
+vhd-util (4.4.0-0ubuntu15) xenial; urgency=medium
+
+  * Make xenial source package.
+
+ -- Monty Taylor <mordred@inaugust.com>  Tue, 18 Apr 2017 09:56:57 -0500
+
 vhd-util (4.4.0-0ubuntu14) trusty; urgency=medium
 
   * Added missing _
