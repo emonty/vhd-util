@@ -23,8 +23,10 @@ Forwarded: <no|not-needed|url proving that it has been forwarded>
 Reviewed-By: <name and email of someone who approved the patch>
 Last-Update: <YYYY-MM-DD>
 
---- a/tools/blktap2/include/libvhd.h
-+++ b/tools/blktap2/include/libvhd.h
+Index: vhd-util/tools/blktap2/include/libvhd.h
+===================================================================
+--- vhd-util.orig/tools/blktap2/include/libvhd.h
++++ vhd-util/tools/blktap2/include/libvhd.h
 @@ -24,6 +24,19 @@
   * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
   * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
@@ -79,7 +81,7 @@ Last-Update: <YYYY-MM-DD>
  
  #define UTF_16                     "UTF-16"
  #define UTF_16LE                   "UTF-16LE"
-@@ -128,9 +154,9 @@
+@@ -128,9 +154,9 @@ typedef struct vhd_context         vhd_c
  typedef uint32_t                   vhd_flag_creat_t;
  
  struct vhd_bat {
@@ -92,7 +94,7 @@ Last-Update: <YYYY-MM-DD>
  };
  
  struct vhd_batmap {
-@@ -144,8 +170,8 @@
+@@ -144,8 +170,8 @@ struct vhd_context {
  	int                        oflags;
  	int                        is_block;
  
@@ -103,7 +105,7 @@ Last-Update: <YYYY-MM-DD>
  
  	vhd_header_t               header;
  	vhd_footer_t               footer;
-@@ -323,4 +349,78 @@
+@@ -323,4 +349,78 @@ int vhd_write_block(vhd_context_t *, uin
  int vhd_io_read(vhd_context_t *, char *, uint64_t, uint32_t);
  int vhd_io_write(vhd_context_t *, char *, uint64_t, uint32_t);
  
@@ -182,8 +184,10 @@ Last-Update: <YYYY-MM-DD>
 +//int get_file_size(char *, off_t *);
 +
  #endif
---- a/tools/blktap2/include/vhd-util.h
-+++ b/tools/blktap2/include/vhd-util.h
+Index: vhd-util/tools/blktap2/include/vhd-util.h
+===================================================================
+--- vhd-util.orig/tools/blktap2/include/vhd-util.h
++++ vhd-util/tools/blktap2/include/vhd-util.h
 @@ -24,6 +24,13 @@
   * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
   * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
@@ -198,16 +202,18 @@ Last-Update: <YYYY-MM-DD>
  #ifndef _VHD_UTIL_H_
  #define _VHD_UTIL_H_
  
-@@ -40,5 +47,6 @@
+@@ -40,5 +47,6 @@ int vhd_util_modify(int argc, char **arg
  int vhd_util_scan(int argc, char **argv);
  int vhd_util_check(int argc, char **argv);
  int vhd_util_revert(int argc, char **argv);
 +int vhd_util_convert(int argc, char ** argv);
  
  #endif
---- a/tools/blktap2/vhd/lib/Makefile
-+++ b/tools/blktap2/vhd/lib/Makefile
-@@ -42,6 +42,7 @@
+Index: vhd-util/tools/blktap2/vhd/lib/Makefile
+===================================================================
+--- vhd-util.orig/tools/blktap2/vhd/lib/Makefile
++++ vhd-util/tools/blktap2/vhd/lib/Makefile
+@@ -42,6 +42,7 @@ LIB-SRCS        += vhd-util-set-field.c
  LIB-SRCS        += vhd-util-snapshot.c
  LIB-SRCS        += vhd-util-scan.c
  LIB-SRCS        += vhd-util-check.c
@@ -215,8 +221,10 @@ Last-Update: <YYYY-MM-DD>
  LIB-SRCS        += vhd-util-uuid.c
  LIB-SRCS        += relative-path.c
  LIB-SRCS        += atomicio.c
---- a/tools/blktap2/vhd/lib/libvhd.c
-+++ b/tools/blktap2/vhd/lib/libvhd.c
+Index: vhd-util/tools/blktap2/vhd/lib/libvhd.c
+===================================================================
+--- vhd-util.orig/tools/blktap2/vhd/lib/libvhd.c
++++ vhd-util/tools/blktap2/vhd/lib/libvhd.c
 @@ -24,6 +24,20 @@
   * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
   * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
@@ -246,7 +254,7 @@ Last-Update: <YYYY-MM-DD>
  
  void
  libvhd_set_log_level(int level)
-@@ -55,12 +70,12 @@
+@@ -55,12 +70,12 @@ libvhd_set_log_level(int level)
  }
  
  #define VHDLOG(_f, _a...)						\
@@ -263,7 +271,7 @@ Last-Update: <YYYY-MM-DD>
  #define BIT_MASK 0x80
  
  #ifdef ENABLE_FAILURE_TESTING
-@@ -417,7 +432,7 @@
+@@ -417,7 +432,7 @@ vhd_batmap_header_offset(vhd_context_t *
  
  	off  = ctx->header.table_offset;
  	bat  = ctx->header.max_bat_size * sizeof(uint32_t);
@@ -272,7 +280,7 @@ Last-Update: <YYYY-MM-DD>
  
  	*_off = off;
  	return 0;
-@@ -930,6 +945,7 @@
+@@ -930,6 +945,7 @@ vhd_read_footer_at(vhd_context_t *ctx, v
  	memcpy(footer, buf, sizeof(vhd_footer_t));
  
  	vhd_footer_in(footer);
@@ -280,7 +288,7 @@ Last-Update: <YYYY-MM-DD>
  	err = vhd_validate_footer(footer);
  
  out:
-@@ -955,6 +971,7 @@
+@@ -955,6 +971,7 @@ vhd_read_footer(vhd_context_t *ctx, vhd_
  		return -errno;
  
  	err = vhd_read_footer_at(ctx, footer, off - 512);
@@ -288,7 +296,7 @@ Last-Update: <YYYY-MM-DD>
  	if (err != -EINVAL)
  		return err;
  
-@@ -1802,7 +1819,7 @@
+@@ -1802,7 +1819,7 @@ vhd_read_bitmap(vhd_context_t *ctx, uint
  		return -EINVAL;
  
  	off  = vhd_sectors_to_bytes(blk);
@@ -297,7 +305,7 @@ Last-Update: <YYYY-MM-DD>
  
  	err  = vhd_seek(ctx, off, SEEK_SET);
  	if (err)
-@@ -1824,6 +1841,18 @@
+@@ -1824,6 +1841,18 @@ fail:
  	return err;
  }
  
@@ -316,7 +324,7 @@ Last-Update: <YYYY-MM-DD>
  int
  vhd_read_block(vhd_context_t *ctx, uint32_t block, char **bufp)
  {
-@@ -1863,6 +1892,7 @@
+@@ -1863,6 +1892,7 @@ vhd_read_block(vhd_context_t *ctx, uint3
  		goto fail;
  	}
  
@@ -324,7 +332,7 @@ Last-Update: <YYYY-MM-DD>
  	if (end < off + ctx->header.block_size) {
  		size = end - off;
  		memset(buf + size, 0, ctx->header.block_size - size);
-@@ -1911,7 +1941,7 @@
+@@ -1911,7 +1941,7 @@ vhd_write_footer_at(vhd_context_t *ctx,
  	if (err)
  		goto out;
  
@@ -333,7 +341,7 @@ Last-Update: <YYYY-MM-DD>
  
  	err = vhd_write(ctx, f, sizeof(vhd_footer_t));
  
-@@ -2247,6 +2277,11 @@
+@@ -2247,6 +2277,11 @@ vhd_read(vhd_context_t *ctx, void *buf,
  	if (ret == size)
  		return 0;
  
@@ -345,7 +353,7 @@ Last-Update: <YYYY-MM-DD>
  	VHDLOG("%s: read of %zu returned %zd, errno: %d\n",
  	       ctx->file, size, ret, -errno);
  
-@@ -2264,6 +2299,11 @@
+@@ -2264,6 +2299,11 @@ vhd_write(vhd_context_t *ctx, void *buf,
  	if (ret == size)
  		return 0;
  
@@ -357,7 +365,7 @@ Last-Update: <YYYY-MM-DD>
  	VHDLOG("%s: write of %zu returned %zd, errno: %d\n",
  	       ctx->file, size, ret, -errno);
  
-@@ -2346,7 +2386,7 @@
+@@ -2346,7 +2386,7 @@ int
  vhd_open(vhd_context_t *ctx, const char *file, int flags)
  {
  	int err, oflags;
@@ -366,7 +374,7 @@ Last-Update: <YYYY-MM-DD>
  	if (flags & VHD_OPEN_STRICT)
  		vhd_flag_clear(flags, VHD_OPEN_FAST);
  
-@@ -2372,6 +2412,7 @@
+@@ -2372,6 +2412,7 @@ vhd_open(vhd_context_t *ctx, const char
  	}
  
  	err = vhd_test_file_fixed(ctx->file, &ctx->is_block);
@@ -374,7 +382,7 @@ Last-Update: <YYYY-MM-DD>
  	if (err)
  		goto fail;
  
-@@ -2384,6 +2425,7 @@
+@@ -2384,6 +2425,7 @@ vhd_open(vhd_context_t *ctx, const char
  	}
  
  	err = vhd_read_footer(ctx, &ctx->footer);
@@ -382,7 +390,7 @@ Last-Update: <YYYY-MM-DD>
  	if (err)
  		goto fail;
  
-@@ -2460,7 +2502,7 @@
+@@ -2460,7 +2502,7 @@ vhd_initialize_header_parent_name(vhd_co
  	 * big endian unicode here 
  	 */
  	cd = iconv_open(UTF_16BE, "ASCII");
@@ -391,7 +399,7 @@ Last-Update: <YYYY-MM-DD>
  		err = -errno;
  		goto out;
  	}
-@@ -2512,6 +2554,22 @@
+@@ -2512,6 +2554,22 @@ get_file_size(const char *name)
  	return end;
  }
  
@@ -414,7 +422,7 @@ Last-Update: <YYYY-MM-DD>
  static int
  vhd_initialize_header(vhd_context_t *ctx, const char *parent_path, 
  		uint64_t size, int raw)
-@@ -2582,7 +2640,9 @@
+@@ -2582,7 +2640,9 @@ vhd_write_parent_locators(vhd_context_t
  
  	off = ctx->batmap.header.batmap_offset + 
  		vhd_sectors_to_bytes(ctx->batmap.header.batmap_size);
@@ -425,7 +433,7 @@ Last-Update: <YYYY-MM-DD>
  		off = vhd_bytes_padded(off);
  
  	for (i = 0; i < 3; i++) {
-@@ -2699,7 +2759,7 @@
+@@ -2699,7 +2759,7 @@ vhd_create_batmap(vhd_context_t *ctx)
  	if (!vhd_type_dynamic(ctx))
  		return -EINVAL;
  
@@ -434,7 +442,7 @@ Last-Update: <YYYY-MM-DD>
  	header    = &ctx->batmap.header;
  
  	memset(header, 0, sizeof(vhd_batmap_header_t));
-@@ -2711,9 +2771,12 @@
+@@ -2711,9 +2771,12 @@ vhd_create_batmap(vhd_context_t *ctx)
  
  	header->batmap_offset  = off +
  		vhd_bytes_padded(sizeof(vhd_batmap_header_t));
@@ -448,7 +456,7 @@ Last-Update: <YYYY-MM-DD>
  	map_bytes = vhd_sectors_to_bytes(header->batmap_size);
  
  	err = posix_memalign((void **)&ctx->batmap.map,
-@@ -2746,7 +2809,7 @@
+@@ -2746,7 +2809,7 @@ vhd_create_bat(vhd_context_t *ctx)
  
  	memset(ctx->bat.bat, 0, size);
  	for (i = 0; i < ctx->header.max_bat_size; i++)
@@ -457,7 +465,7 @@ Last-Update: <YYYY-MM-DD>
  
  	err = vhd_seek(ctx, ctx->header.table_offset, SEEK_SET);
  	if (err)
-@@ -2847,6 +2910,8 @@
+@@ -2847,6 +2910,8 @@ __vhd_create(const char *name, const cha
  	memset(&ctx, 0, sizeof(vhd_context_t));
  	footer = &ctx.footer;
  	header = &ctx.header;
@@ -466,7 +474,7 @@ Last-Update: <YYYY-MM-DD>
  	blks   = (bytes + VHD_BLOCK_SIZE - 1) >> VHD_BLOCK_SHIFT;
  	size   = blks << VHD_BLOCK_SHIFT;
  
-@@ -2969,6 +3034,10 @@
+@@ -2969,6 +3034,10 @@ __vhd_io_dynamic_copy_data(vhd_context_t
  		if (test_bit(map, map_off + i))
  			goto next;
  
@@ -477,7 +485,7 @@ Last-Update: <YYYY-MM-DD>
  		if (ctx && !vhd_bitmap_test(ctx, bitmap, bitmap_off + i))
  			goto next;
  
-@@ -3160,8 +3229,10 @@
+@@ -3160,8 +3229,10 @@ out:
  int
  vhd_io_read(vhd_context_t *ctx, char *buf, uint64_t sec, uint32_t secs)
  {
@@ -488,7 +496,7 @@ Last-Update: <YYYY-MM-DD>
  
  	if (!vhd_type_dynamic(ctx))
  		return __vhd_io_fixed_read(ctx, buf, sec, secs);
-@@ -3327,11 +3398,482 @@
+@@ -3327,11 +3398,482 @@ fail:
  int
  vhd_io_write(vhd_context_t *ctx, char *buf, uint64_t sec, uint32_t secs)
  {
@@ -971,9 +979,11 @@ Last-Update: <YYYY-MM-DD>
 +	return err;
 +}
 +
---- a/tools/blktap2/vhd/lib/vhd-util-check.c
-+++ b/tools/blktap2/vhd/lib/vhd-util-check.c
-@@ -89,7 +89,7 @@
+Index: vhd-util/tools/blktap2/vhd/lib/vhd-util-check.c
+===================================================================
+--- vhd-util.orig/tools/blktap2/vhd/lib/vhd-util-check.c
++++ vhd-util/tools/blktap2/vhd/lib/vhd-util-check.c
+@@ -89,7 +89,7 @@ vhd_util_check_validate_footer(vhd_foote
  		     footer->crtr_ver == VHD_VERSION(1, 1))) {
  			char tmp = footer->hidden;
  			footer->hidden = 0;
@@ -982,8 +992,10 @@ Last-Update: <YYYY-MM-DD>
  			footer->hidden = tmp;
  
  			if (checksum == footer->checksum)
+Index: vhd-util/tools/blktap2/vhd/lib/vhd-util-convert.c
+===================================================================
 --- /dev/null
-+++ b/tools/blktap2/vhd/lib/vhd-util-convert.c
++++ vhd-util/tools/blktap2/vhd/lib/vhd-util-convert.c
 @@ -0,0 +1,136 @@
 +/*++
 +
@@ -1121,8 +1133,10 @@ Last-Update: <YYYY-MM-DD>
 +	return -EINVAL;
 +}
 +
---- a/tools/blktap2/vhd/vhd-util.c
-+++ b/tools/blktap2/vhd/vhd-util.c
+Index: vhd-util/tools/blktap2/vhd/vhd-util.c
+===================================================================
+--- vhd-util.orig/tools/blktap2/vhd/vhd-util.c
++++ vhd-util/tools/blktap2/vhd/vhd-util.c
 @@ -24,6 +24,13 @@
   * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
   * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
@@ -1137,7 +1151,7 @@ Last-Update: <YYYY-MM-DD>
  #include <errno.h>
  #include <stdio.h>
  #include <stdlib.h>
-@@ -59,6 +66,7 @@
+@@ -59,6 +66,7 @@ struct command commands[] = {
  	{ .name = "scan",        .func = vhd_util_scan          },
  	{ .name = "check",       .func = vhd_util_check         },
  	{ .name = "revert",      .func = vhd_util_revert        },
@@ -1145,7 +1159,7 @@ Last-Update: <YYYY-MM-DD>
  };
  
  #define print_commands()					\
-@@ -136,8 +144,10 @@
+@@ -136,8 +144,10 @@ main(int argc, char *argv[])
  	for (i = 1; i < cargc; i++) {
  		char *arg = argv[i + (argc - cargc)];
  
@@ -1156,9 +1170,11 @@ Last-Update: <YYYY-MM-DD>
  			continue;
  		}
  
---- a/tools/xenstat/libxenstat/Makefile
-+++ b/tools/xenstat/libxenstat/Makefile
-@@ -99,7 +99,7 @@
+Index: vhd-util/tools/xenstat/libxenstat/Makefile
+===================================================================
+--- vhd-util.orig/tools/xenstat/libxenstat/Makefile
++++ vhd-util/tools/xenstat/libxenstat/Makefile
+@@ -99,7 +99,7 @@ $(PYLIB): $(PYSRC)
  
  python-bindings: $(PYLIB) $(PYMOD)
  
@@ -1167,3 +1183,23 @@ Last-Update: <YYYY-MM-DD>
  install-python-bindings: $(PYLIB) $(PYMOD)
  	$(INSTALL_PROG) $(PYLIB) $(DESTDIR)$(pythonlibdir)/_xenstat.so
  	$(INSTALL_PROG) $(PYMOD) $(DESTDIR)$(pythonlibdir)/xenstat.py
+Index: vhd-util/tools/blktap2/drivers/block-qcow.c
+===================================================================
+--- vhd-util.orig/tools/blktap2/drivers/block-qcow.c
++++ vhd-util/tools/blktap2/drivers/block-qcow.c
+@@ -427,6 +427,7 @@ static uint64_t get_cluster_offset(struc
+ 
+ 		if (posix_memalign((void **)&tmp_ptr, 4096, 4096) != 0) {
+ 			DPRINTF("ERROR allocating memory for L1 table\n");
++                        return 0;
+ 		}
+ 		memcpy(tmp_ptr, l1_ptr, 4096);
+ 
+@@ -600,6 +601,7 @@ found:
+ 		
+ 		if (posix_memalign((void **)&tmp_ptr2, 4096, 4096) != 0) {
+ 			DPRINTF("ERROR allocating memory for L1 table\n");
++                        return 0;
+ 		}
+ 		memcpy(tmp_ptr2, l2_ptr, 4096);
+ 		lseek(s->fd, l2_offset + (l2_sector << 12), SEEK_SET);

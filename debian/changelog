@@ -1,3 +1,9 @@
+vhd-util (4.4.0-0ubuntu16) xenial; urgency=medium
+
+  * Update citrix patch for newer, stricter GCC.
+
+ -- Monty Taylor <mordred@inaugust.com>  Tue, 23 May 2017 06:57:42 -0500
+
 vhd-util (4.4.0-0ubuntu15) xenial; urgency=medium
 
   * Make xenial source package.
