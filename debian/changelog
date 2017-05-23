@@ -1,3 +1,9 @@
+vhd-util (4.4.0-0ubuntu16zesty0) zesty; urgency=medium
+
+  * Make zesty source package.
+
+ -- Monty Taylor <mordred@inaugust.com>  Tue, 23 May 2017 08:04:36 -0500
+
 vhd-util (4.4.0-0ubuntu16) xenial; urgency=medium
 
   * Update citrix patch for newer, stricter GCC.
